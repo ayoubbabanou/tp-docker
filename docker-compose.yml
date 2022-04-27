@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  # site web
+  tp-website:
+    hostname: tp-website
+    image: php:apache
+    container_name: "tp-website"
+    volumes:
+      - ./website:/var/www/html
+    environment:
+      USERNAME: "toto"
+      PASSWORD: "python"
+    networks:
+      - tp
+    ports:
+      - 80:80
+    depends_on:
+      - tp-api
+
+  # api
+  tp-api:
+    hostname: tp-api
+    image: tp-docker:v1
+    container_name: "tp-api"
+    volumes:
+      - ./simple_api/student_age.json:/data/student_age.json
+    ports:
+      - 4001:5000
+    networks:
+      - tp
+
+networks:
+  tp:
+    name: tp
